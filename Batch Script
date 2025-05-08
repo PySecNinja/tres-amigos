@@ -1,0 +1,80 @@
+@echo off
+setlocal EnableDelayedExpansion
+
+:: ====================================================
+:: CONFIGURATION
+:: ----------------------------------------------------
+:: SOURCE_DIR: The folder where the script is located.
+set "SOURCE_DIR=%~dp0"
+:: WORK_DIR: Main working folder on the system drive.
+set "WORK_DIR=%SystemDrive%\MSIUpdates"
+:: DOWNLOAD_DIR: Subfolder for installer file storage (optional).
+set "DOWNLOAD_DIR=%WORK_DIR%\downloadeds"
+
+:: Create necessary directories if they do not exist.
+if not exist "%WORK_DIR%" mkdir "%WORK_DIR%"
+if not exist "%DOWNLOAD_DIR%" mkdir "%DOWNLOAD_DIR%"
+
+echo ====================================================
+echo           MSU and MSI Installer Script for Windows 10
+echo ====================================================
+echo.
+
+:: ====================================================
+:: Step 1: Install MSU Patches
+:: ----------------------------------------------------
+echo Step 1: Installing MSU patches found in %SOURCE_DIR% and its subfolders...
+FOR /r "%SOURCE_DIR%" %%F IN (*.msu) DO (
+    echo Installing patch: %%~nxF...
+    wusa "%%~fF" /quiet /norestart
+    echo Finished installing: %%~nxF
+)
+echo Step 1 complete: MSU patch installation complete.
+timeout /t 2 /nobreak >nul
+echo.
+
+:: ====================================================
+:: Step 2: Process and Execute MSI Installers
+:: ----------------------------------------------------
+echo Step 2: Handling MSI installers...
+:: Copy all MSI files found in the SOURCE_DIR to the working directory.
+FOR /r "%SOURCE_DIR%" %%F IN (*.msi) DO (
+    echo Copying MSI file: %%~nxF to working directory...
+    copy "%%F" "%WORK_DIR%\" >nul
+)
+
+:: Change into the working directory and execute each MSI file.
+pushd "%WORK_DIR%"
+FOR %%F IN (*.msi) DO (
+    echo Installing application from MSI file: %%~nxF...
+    msiexec /i "%%F" /qn /norestart
+    if errorlevel 1 (
+         echo [ERROR] Installation failed for %%~nxF.
+    ) else (
+         echo Successfully installed: %%~nxF.
+    )
+)
+popd
+echo Step 2 complete: MSI installation complete.
+timeout /t 1 /nobreak >nul
+echo.
+
+:: ====================================================
+:: Step 3: Finalization and Reboot Prompt
+:: ----------------------------------------------------
+echo Step 3: Process complete.
+echo A reboot is required to finalize installations.
+echo Once rebooted, please verify the installation.
+echo.
+choice /M "Would you like to reboot now? (Y/N)"
+if errorlevel 2 (
+    echo You chose not to reboot now. Please remember to reboot manually.
+) else if errorlevel 1 (
+    echo Rebooting the system in 10 seconds...
+    shutdown /r /t 10
+)
+echo.
+echo Script ended. Press any key to exit.
+pause
+endlocal
+exit /b

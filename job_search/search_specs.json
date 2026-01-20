@@ -1,0 +1,23 @@
+{
+  "output_file": "jobs_fetched.txt",
+  "sources": [
+    {
+      "provider": "greenhouse",
+      "company": "crowdstrike",
+      "keywords": ["cyber", "security"],
+      "locations": ["remote"],
+      "max_results": 50
+    },
+    {
+      "provider": "lever",
+      "company": "lockheedmartin",
+      "keywords": ["cyber"],
+      "locations": [],
+      "max_results": 50
+    },
+    {
+      "provider": "google_jobs",
+      "query": "cyber security roles Lockheed Martin"
+    }
+  ]
+}

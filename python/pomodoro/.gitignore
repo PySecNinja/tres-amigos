@@ -1,0 +1,9 @@
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.pomodoro_initialized
+*.egg-info/
+dist/
+build/
+.claude/

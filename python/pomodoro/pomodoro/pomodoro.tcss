@@ -1,0 +1,123 @@
+/* Pomodoro Timer Styles */
+
+Screen {
+    background: $surface;
+    align: center middle;
+}
+
+#main {
+    width: 100%;
+    height: 100%;
+    align: center middle;
+}
+
+#timer-container {
+    width: auto;
+    height: auto;
+    padding: 2 4;
+    border: thick $primary;
+    background: $panel;
+    align: center middle;
+}
+
+/* Phase-specific colors */
+#timer-container.work {
+    border: thick $error;
+}
+
+#timer-container.work #big-timer {
+    color: $error;
+}
+
+#timer-container.work #phase-label {
+    color: $error;
+}
+
+#timer-container.work #progress Bar > .bar--bar {
+    color: $error;
+}
+
+#timer-container.short-break {
+    border: thick $success;
+}
+
+#timer-container.short-break #big-timer {
+    color: $success;
+}
+
+#timer-container.short-break #phase-label {
+    color: $success;
+}
+
+#timer-container.short-break #progress Bar > .bar--bar {
+    color: $success;
+}
+
+#timer-container.long-break {
+    border: thick $primary;
+}
+
+#timer-container.long-break #big-timer {
+    color: $primary;
+}
+
+#timer-container.long-break #phase-label {
+    color: $primary;
+}
+
+#timer-container.long-break #progress Bar > .bar--bar {
+    color: $primary;
+}
+
+#phase-label {
+    text-align: center;
+    text-style: bold;
+    padding-bottom: 1;
+    width: 100%;
+}
+
+#big-timer {
+    text-align: center;
+    text-style: bold;
+    width: auto;
+    height: auto;
+    padding: 1 2;
+}
+
+#status-badge {
+    text-align: center;
+    padding-top: 1;
+    width: 100%;
+}
+
+#status-badge.running {
+    color: $success;
+    text-style: bold;
+}
+
+#status-badge.paused {
+    color: $text-muted;
+    text-style: dim;
+}
+
+#progress {
+    width: 40;
+    margin-top: 1;
+}
+
+ProgressBar > .bar--bar {
+    color: $primary;
+}
+
+ProgressBar > .bar--complete {
+    color: $success;
+}
+
+Footer {
+    background: $panel;
+}
+
+FooterKey > .footer-key--key {
+    background: $primary;
+    color: $text;
+}

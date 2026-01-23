@@ -1,0 +1,92 @@
+# Claude Code Prompt: Terminal Pomodoro Timer Styled Like pomodoro.io
+
+You are a Senior Python Dev Build a terminal Pomodoro timer that feels like pomodoro.io: big, clean countdown; simple controls; clear phase switching; minimal distractions.
+
+## Product Goal
+A terminal Pomodoro that mirrors pomodoro.io’s UX:
+- Large centered timer (MM:SS)
+- Clear phase label (Pomodoro / Short Break / Long Break)
+- Simple start/pause/reset/skip controls
+- Subtle progress indication
+- Optional auto-start for breaks and next pomodoro
+- Minimal configuration, great defaults
+
+## Target Implementation
+- Language: Python 3
+- Prefer to use a venv if it means i can keep my env clean
+- Entrypoint: `pomodoro` (or `pomodoro.py`)
+
+## UX Requirements (pomodoro.io-like)
+1. **Big timer first**
+   - Center the countdown prominently (largest text possible within terminal constraints)
+   - Phase label above timer
+   - Small status line below (RUNNING/PAUSED)
+
+2. **Simple controls (single-key)**
+   - `Space` = Start/Pause (primary action like pomodoro.io)
+   - `r` = Reset current phase to full duration
+   - `n` = Next (skip to next phase)
+   - `p` = Previous phase (optional; if easy)
+   - `q` = Quit
+   - Show a compact help legend at the bottom.
+
+3. **Phase rotation**
+   - Pomodoro (default 25:00)
+   - Short Break (default 05:00)
+   - Long Break (default 15:00)
+   - Long break after N pomodoros (default N=4)
+   - Display cycle counter like: `Pomodoro 2/4`
+
+4. **Auto behavior toggles**
+   - `--auto-break` (default: ON) auto-start breaks when a pomodoro ends
+   - `--auto-work` (default: OFF) auto-start next pomodoro when break ends
+   - `--auto` enables both
+
+5. **Minimal visuals**
+   - Progress bar under the timer (single line)
+   - Optional subtle color (red for pomodoro, green for breaks) if terminal supports; otherwise plain
+
+## Notifications (Optional but supported)
+- On phase completion:
+  - terminal bell `\a` (unless `--no-notify`)
+  - macOS: `osascript` notification if available
+  - Linux: `notify-send` if available
+- Fail silently if not available.
+
+## Reliability Requirements
+- Clean exit (restore terminal)
+- Works over SSH
+- Handles Ctrl+C gracefully
+- No flicker; redraw only what’s needed
+
+## Deliverables
+- `README.md` with:
+  - screenshots (ASCII mock is fine)
+  - controls legend
+  - usage examples
+- `pomodoro.py` (or installable `pomodoro`)
+- Unit tests for the phase rotation logic (separate from curses UI):
+  - long break every N pomodoros
+  - reset behavior
+  - next/skip behavior
+  - auto-start toggles logic
+
+## Implementation Guidance
+- Use a small state machine:
+  - Phase: WORK / SHORT / LONG
+  - Status: RUNNING / PAUSED
+  - Counters: completed_work_in_cycle, cycle_size
+  - Remaining seconds
+- Separate concerns:
+  - `scheduler.py` (pure logic) + `ui.py` (curses) + `main.py` (args/wireup)
+  - If you keep it one file, still separate with clear sections.
+
+## Build Plan
+1. Brief design (state machine + file layout)
+2. Implement scheduler logic + tests
+3. Implement curses UI (big timer, controls)
+4. Add notifications
+5. Provide README + examples
+
+Now build it.
+
